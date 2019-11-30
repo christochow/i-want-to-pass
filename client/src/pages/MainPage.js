@@ -21,7 +21,7 @@ class MainPage extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginBottom: '150px'}}>
                 {!this.state.editing && <Button color="primary" onClick={this.onClick}>Add a new course</Button>}
                 {this.state.editing && <CalculatorComponent/>}
             </div>
