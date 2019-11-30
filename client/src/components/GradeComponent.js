@@ -3,7 +3,6 @@ import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import calculator from "../helper/calculator";
-import GradeComponent from "./GradeComponent";
 
 const styles = {
     input: {
@@ -14,29 +13,34 @@ const styles = {
     }
 };
 
-class CalculatorComponent extends Component {
+class GradeComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             grade: 0,
+            mark: 0,
+            outOf: 0,
             percentage: 0.0,
-            needed: 0,
-            courseWork: 0
+            editing: true
         }
     }
 
-    onGradeChange = (e) => {
-        if(e.target.value > 100 || e.target.value < 0){
-            return;
-        }
+    onMarkChange = (e) => {
         this.setState({
             ...this.state,
-            grade: e.target.value,
+            mark: e.target.value,
+        })
+    };
+
+    onOutOfChange = (e) => {
+        this.setState({
+            ...this.state,
+            outOf: e.target.value,
         })
     };
 
     onPercentageChange = (e) => {
-        if(e.target.value > 100 || e.target.value < 0){
+        if (e.target.value > 100 || e.target.value < 0) {
             return;
         }
         this.setState({
@@ -49,39 +53,54 @@ class CalculatorComponent extends Component {
         e.preventDefault();
         this.setState({
             ...this.state,
-            needed: calculator.calculateRequired(this.state.grade, this.state.percentage, 50)
+            grade: calculator.calculateGrade(this.state.mark, this.state.outOf),
+            editing: false
         })
     };
 
     render() {
         return (
-            <div>
-                {this.state.needed > 0 && <h2>You need {this.state.needed}% on the exam to pass the course</h2>}
-                {this.state.needed < 0 && <h2>Sorry but you cannot pass this course :(</h2>}
-                <form onSubmit={this.onSubmit}>
-                    <label style={{color: "white"}}>
-                        Enter your term grade:
+            <div style={{margin: '15px'}}>
+                {!this.state.editing && <div>Grade: {this.state.grade}, worth {this.state.percentage}%</div>}
+                {this.state.editing && <form onSubmit={this.onSubmit}>
+                    <label style={{color: "white", marginLeft: "15px"}}>
+                        Mark:
                         <TextField
-                            style={{marginLeft: "15px"}}
+                            style={{width: '50px', marginLeft: "5px"}}
                             inputProps={{
                                 className: this.props.classes.input,
                                 step: 'any',
                                 min: 0,
-                                max: 100
+                                max: this.state.outOf
                             }}
                             InputLabelProps={{
                                 className: this.props.classes.label
                             }}
                             type="number"
                             required
-                            onChange={this.onGradeChange}
+                            onChange={this.onMarkChange}
                         />
                     </label>
-                    <div style={{height: '25px'}}/>
-                    <label style={{color: "white"}}>
-                        Enter your exam weighting:
+                    <label style={{color: "white", marginLeft: "15px"}}>
+                        Out Of:
                         <TextField
-                            style={{marginLeft: "15px"}}
+                            style={{width: '50px', marginLeft: "5px"}}
+                            inputProps={{
+                                className: this.props.classes.input,
+                                step: 'any'
+                            }}
+                            InputLabelProps={{
+                                className: this.props.classes.label
+                            }}
+                            type="number"
+                            required
+                            onChange={this.onOutOfChange}
+                        />
+                    </label>
+                    <label style={{color: "white", marginLeft: "15px"}}>
+                        Worth:
+                        <TextField
+                            style={{width: '50px', marginLeft: "5px"}}
                             inputProps={{
                                 className: this.props.classes.input,
                                 step: 'any',
@@ -97,16 +116,12 @@ class CalculatorComponent extends Component {
                         />
                         %
                     </label>
-                    <div style={{height: '15px'}}/>
-                    <Button style={{backgroundColor: 'white'}}
-                            onClick={()=>this.setState({...this.state, courseWork: ++this.state.courseWork})}
-                            color="secondary">Add Course Work</Button>
-                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit" color="secondary">Calculate</Button>
-                </form>
-                {[...Array(this.state.courseWork).keys()].map(()=>(<GradeComponent/>))}
+                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
+                            color="secondary">Calculate</Button>
+                </form>}
             </div>
         );
     }
 }
 
-export default withStyles(styles)(CalculatorComponent);
+export default withStyles(styles)(GradeComponent);
