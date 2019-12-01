@@ -100,14 +100,15 @@ class CalculatorComponent extends Component {
         if (this.state.saved) {
             this.props.updateCourse(this.state)
         }
-    }
+    };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (!this.props.course) {
+        if (!this.state.saved) {
             return;
         }
         this.setState({
             ...prevState,
+            name: this.props.course.name,
             grade: this.props.course.grade,
             percentage: this.props.course.percentage,
             needed: this.props.course.needed,
@@ -204,7 +205,7 @@ class CalculatorComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     let courseName = state.course.map(e => e.name);
-    if (ownProps.course) {
+    if (ownProps.location.state.course) {
         let course = state.course.find(e => e.name === ownProps.course.name);
         return {courseName, course};
     }
