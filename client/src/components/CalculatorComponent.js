@@ -20,11 +20,13 @@ class CalculatorComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            grade: this.props.course ? this.props.course.grade : 0,
-            percentage: this.props.course ? this.props.course.percentage : 0.0,
-            needed: this.props.course ? this.props.course.needed : 0,
-            courseWork: this.props.course ? this.props.course.courseWork : [],
+            course: this.props.course ? this.props.course : {
+                name: '',
+                grade: 0,
+                percentage: 0.0,
+                needed: 0,
+                courseWork: []
+            },
             editing: [],
             saved: !this.props.course === undefined
         };
@@ -40,9 +42,10 @@ class CalculatorComponent extends Component {
         if (e.target.value > 100 || e.target.value < 0) {
             return;
         }
+        let course = {...this.state.course, grade: e.target.value};
         this.setState({
             ...this.state,
-            grade: e.target.value,
+            course
         })
     };
 
@@ -50,70 +53,88 @@ class CalculatorComponent extends Component {
         if (e.target.value > 100 || e.target.value < 0) {
             return;
         }
+        let course = {...this.state.course, percentage: e.target.value};
         this.setState({
             ...this.state,
-            percentage: e.target.value,
+            course
         })
     };
     onNameChange = (e) => {
+        let course = {...this.state.course, name: e.target.value};
         this.setState({
             ...this.state,
-            name: e.target.value,
+            course
         })
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-        let needed = calculator.calculateRequired(this.state.grade, this.state.percentage, 50);
+        let course = this.state.course;
+        let needed = calculator.calculateRequired(course.grade, course.percentage, 50);
+        let newCourse = {...course, needed};
         (this.props.course || this.state.saved) ?
-            this.props.updateCourse({...this.state, needed}) : this.props.addCourse({...this.state, needed});
+            this.props.updateCourse(newCourse) : this.props.addCourse(newCourse);
         this.setState({
             ...this.state,
-            needed: needed,
             saved: true
         })
     };
 
-    newCourseWorkCallback = (index) => (course) => {
+    newCourseWorkCallback = (index) => (courseWork) => {
         let newEditing = [...this.state.editing];
-        let newCourseWork = [...this.state.courseWork];
-        newCourseWork.unshift(course);
+        let newCourseWork = [...this.state.course.courseWork];
+        newCourseWork.unshift(courseWork);
         newEditing.splice(index, 1);
-        this.setState(
-            {
-                ...this.state,
-                courseWork: newCourseWork,
-                editing: newEditing
-            });
+        let course = {...this.state.course};
+        course.courseWork = newCourseWork;
         if (this.state.saved) {
-            this.props.updateCourse(this.state)
+            this.props.updateCourse(course);
+            this.setState({
+                ...this.state,
+                editing: newEditing,
+                course,
+            });
+        } else if(this.state.course.name!==''){
+            this.props.addCourse(course);
+            this.setState({
+                ...this.state,
+                editing: newEditing,
+                course,
+                saved: true
+            });
         }
     };
 
-    updateCourseWorkCallback = (index) => (course) => {
-        let newCourseWork = [...this.state.courseWork];
-        newCourseWork[index] = course;
-        this.setState({
-            ...this.state,
-            courseWork: newCourseWork
-        });
+    updateCourseWorkCallback = (index) => (courseWork) => {
+        let newCourseWork = [...this.state.course.courseWork];
+        newCourseWork[index] = courseWork;
+        let course = {...this.state.course};
+        course.courseWork = newCourseWork;
         if (this.state.saved) {
-            this.props.updateCourse(this.state)
+            this.props.updateCourse(course);
+            this.setState({
+                ...this.state,
+                course,
+            });
+        } else if(this.state.course.name!==''){
+            this.props.addCourse(course);
+            this.setState({
+                ...this.state,
+                course,
+                saved: true
+            });
         }
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (!this.state.saved) {
+        if (!this.props.course) {
             return;
         }
+        let course = this.props.course;
         this.setState({
             ...prevState,
-            name: this.props.course.name,
-            grade: this.props.course.grade,
-            percentage: this.props.course.percentage,
-            needed: this.props.course.needed,
-            courseWork: this.props.course.courseWork,
-        })
+            course
+        });
     }
 
     render() {
@@ -185,17 +206,17 @@ class CalculatorComponent extends Component {
                             outOf: 0,
                             percentage: 0.0
                         }}
-                        callback={() => this.newCourseWorkCallback(index)}
+                        callback={this.newCourseWorkCallback(index)}
                     />
                 ))}
-                {(this.state.editing.length !== 0 || this.state.courseWork.length !== 0) &&
+                {(this.state.editing.length !== 0 || this.state.course.courseWork.length !== 0) &&
                 <div style={{backgroundColor: 'white', height: '1px', marginTop: '5px'}}/>}
-                {this.state.courseWork.map((e, index) => (
+                {this.state.course.courseWork.map((e, index) => (
                     <GradeComponent
                         key={index}
                         course={{...e}}
                         editing={false}
-                        callback={() => this.updateCourseWorkCallback(index)}
+                        callback={this.updateCourseWorkCallback(index)}
                     />
                 ))}
             </div>
@@ -205,9 +226,14 @@ class CalculatorComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     let courseName = state.course.map(e => e.name);
-    if (ownProps.location.state.course) {
-        let course = state.course.find(e => e.name === ownProps.course.name);
-        return {courseName, course};
+    console.log(state)
+    if (ownProps.location) {
+        if(ownProps.location.state){
+            if(ownProps.location.state.course){
+                let course = state.course.find(e => e.name === ownProps.course.name);
+                return {courseName, course};
+            }
+        }
     }
     return {courseName}
 };

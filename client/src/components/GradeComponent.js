@@ -118,7 +118,7 @@ class GradeComponent extends Component {
                             inputProps={{
                                 className: this.props.classes.input,
                                 step: 'any',
-                                min: 0,
+                                min: 1,
                                 max: 100
                             }}
                             InputLabelProps={{
