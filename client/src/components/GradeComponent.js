@@ -17,11 +17,11 @@ class GradeComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            grade: 0,
-            mark: 0,
-            outOf: 0,
-            percentage: 0.0,
-            editing: true
+            grade: this.props.course.grade,
+            mark: this.props.course.mark,
+            outOf: this.props.course.outOf,
+            percentage: this.props.course.percentage,
+            editing: this.props.editing
         }
     }
 
@@ -46,22 +46,34 @@ class GradeComponent extends Component {
         this.setState({
             ...this.state,
             percentage: e.target.value,
-        })
+        });
     };
 
     onSubmit = (e) => {
         e.preventDefault();
         this.setState({
             ...this.state,
-            grade: calculator.calculateGrade(this.state.mark, this.state.outOf),
             editing: false
-        })
+        });
+        this.props.callback({
+            grade: calculator.calculateGrade(this.state.mark, this.state.outOf),
+            mark: this.state.mark,
+            outOf: this.state.outOf,
+            percentage: this.state.percentage
+        });
+
+
     };
 
     render() {
         return (
             <div style={{margin: '15px'}}>
-                {!this.state.editing && <div>Grade: {this.state.grade}, worth {this.state.percentage}%</div>}
+                {!this.state.editing && <div>
+                    Grade: {this.state.grade}, worth {this.state.percentage}%
+                    <Button onClick={() => this.setState({...this.state, editing: true})}>
+                        Edit
+                    </Button>
+                </div>}
                 {this.state.editing && <form onSubmit={this.onSubmit}>
                     <label style={{color: "white", marginLeft: "15px"}}>
                         Mark:
@@ -78,6 +90,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
+                            defaultValue={this.props.course.mark}
                             onChange={this.onMarkChange}
                         />
                     </label>
@@ -94,6 +107,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
+                            defaultValue={this.props.course.outOf}
                             onChange={this.onOutOfChange}
                         />
                     </label>
@@ -112,6 +126,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
+                            defaultValue={this.props.course.percentage}
                             onChange={this.onPercentageChange}
                         />
                         %
