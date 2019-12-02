@@ -183,9 +183,9 @@ class CalculatorPage extends Component {
                         %
                     </label>
                     <div style={{height: '15px'}}/>
-                    <Button style={{backgroundColor: 'white'}}
-                            onClick={() => this.setState({...this.state, editing: [...this.state.editing, {}]})}
-                            color="secondary">Add Course Work</Button>
+                    {/*<Button style={{backgroundColor: 'white'}}*/}
+                    {/*        onClick={() => this.setState({...this.state, editing: [...this.state.editing, {}]})}*/}
+                    {/*        color="secondary">Add Course Work</Button>*/}
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
                             color="secondary">Calculate</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
