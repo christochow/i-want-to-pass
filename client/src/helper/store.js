@@ -32,10 +32,12 @@ let reducers = function (state = initialState, action) {
         case 'removeCourse':
             let courses1 = [...state.course];
             courses1.splice(action.index, 1);
-            return {
+            let newState3 = {
                 ...state,
                 course: courses1
             };
+            cookies.set('course', JSON.stringify(newState3.course));
+            return newState3;
         default:
             return state;
     }
