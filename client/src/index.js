@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import {MuiThemeProvider} from "@material-ui/core";
 import {grey} from "@material-ui/core/colors";
-import {BrowserRouter, HashRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 
 const theme = createMuiTheme({
     palette: {
@@ -26,11 +26,11 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
-        <BrowserRouter basename='i-want-to-pass'>
-        <Provider store={store}>
-        <App/>
-        </Provider>
-        </BrowserRouter>
+        <HashRouter>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </HashRouter>
     </MuiThemeProvider>,
     document.getElementById('root'));
 
