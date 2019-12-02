@@ -29,6 +29,13 @@ let reducers = function (state = initialState, action) {
             };
             cookies.set('course', JSON.stringify(newState2.course));
             return newState2;
+        case 'removeCourse':
+            let courses1 = [...state.course];
+            courses1.splice(action.index, 1);
+            return {
+                ...state,
+                course: courses1
+            };
         default:
             return state;
     }
