@@ -109,7 +109,13 @@ class CalculatorPage extends Component {
     saveCourse = (e) => {
         e.preventDefault();
         let needToSave = !this.state.saved;
-        needToSave ? this.props.updateCourse(this.state.course) : this.props.addCourse(this.state.course);
+        needToSave ? this.props.addCourse(this.state.course) : this.props.updateCourse(this.state.course);
+        if(!this.props.course && !this.state.saved){
+            this.setState({
+                ...this.state,
+                saved: true
+            })
+        }
         alert('saved!')
     };
 
@@ -123,7 +129,8 @@ class CalculatorPage extends Component {
         let course = this.props.course;
         this.setState({
             ...prevState,
-            course
+            course,
+            saved: true
         });
     }
 
