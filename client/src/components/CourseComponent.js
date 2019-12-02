@@ -6,7 +6,7 @@ function CourseComponent(props) {
     let history = useHistory();
 
     return (
-        <div>
+        <div style={{margin: '10px'}}>
             <Button
                 color='secondary'
                 style={{backgroundColor: 'white'}}
