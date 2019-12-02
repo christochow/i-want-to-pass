@@ -8,6 +8,9 @@ let calculator = {
             return needed;
         },
         calculateGrade: (mark, outOf) => {
+            if(outOf===0){
+                return 0;
+            }
             return Math.round(mark*100/outOf);
         }
     };

@@ -26,16 +26,22 @@ class GradeComponent extends Component {
     }
 
     onMarkChange = (e) => {
+        if (isNaN(parseInt(e.target.value))) {
+            return
+        }
         this.setState({
             ...this.state,
-            mark: e.target.value,
+            mark: parseInt(e.target.value),
         })
     };
 
     onOutOfChange = (e) => {
+        if (isNaN(parseInt(e.target.value))) {
+            return
+        }
         this.setState({
             ...this.state,
-            outOf: e.target.value,
+            outOf: parseInt(e.target.value),
         })
     };
 
@@ -43,9 +49,12 @@ class GradeComponent extends Component {
         if (e.target.value > 100 || e.target.value < 0) {
             return;
         }
+        if (isNaN(parseInt(e.target.value))) {
+            return
+        }
         this.setState({
             ...this.state,
-            percentage: e.target.value,
+            percentage: parseInt(e.target.value),
         });
     };
 
@@ -69,9 +78,12 @@ class GradeComponent extends Component {
         return (
             <div style={{margin: '15px'}}>
                 {!this.state.editing && <div>
-                    Grade: {this.state.grade}, worth {this.state.percentage}%
+                    {this.props.index}. Grade: {this.state.grade}, worth {this.state.percentage}%
                     <Button onClick={() => this.setState({...this.state, editing: true})}>
                         Edit
+                    </Button>
+                    <Button onClick={() => this.props.deleteCallback()}>
+                        Delete
                     </Button>
                 </div>}
                 {this.state.editing && <form onSubmit={this.onSubmit}>
@@ -90,7 +102,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
-                            defaultValue={this.props.course.mark}
+                            defaultValue={this.props.course.mark.toString()}
                             onChange={this.onMarkChange}
                         />
                     </label>
@@ -100,6 +112,7 @@ class GradeComponent extends Component {
                             style={{width: '50px', marginLeft: "5px"}}
                             inputProps={{
                                 className: this.props.classes.input,
+                                min: 1,
                                 step: 'any'
                             }}
                             InputLabelProps={{
@@ -107,7 +120,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
-                            defaultValue={this.props.course.outOf}
+                            defaultValue={this.props.course.outOf.toString()}
                             onChange={this.onOutOfChange}
                         />
                     </label>
@@ -126,7 +139,7 @@ class GradeComponent extends Component {
                             }}
                             type="number"
                             required
-                            defaultValue={this.props.course.percentage}
+                            defaultValue={this.props.course.percentage.toString()}
                             onChange={this.onPercentageChange}
                         />
                         %
