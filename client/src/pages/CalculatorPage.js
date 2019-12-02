@@ -3,7 +3,8 @@ import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import calculator from "../helper/calculator";
-import GradeComponent from "./GradeComponent";
+import GradeComponent from "../components/GradeComponent";
+import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 const styles = {
@@ -16,7 +17,7 @@ const styles = {
 };
 
 
-class CalculatorComponent extends Component {
+class CalculatorPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +29,7 @@ class CalculatorComponent extends Component {
                 courseWork: []
             },
             editing: [],
-            saved: !this.props.course === undefined
+            saved: !(this.props.course === undefined)
         };
         this.numberInputProps = {
             className: this.props.classes.input,
@@ -67,15 +68,13 @@ class CalculatorComponent extends Component {
         })
     };
 
-    onSubmit = (e) => {
-        e.preventDefault();
+    onSubmit = () => {
         let course = this.state.course;
         let needed = calculator.calculateRequired(course.grade, course.percentage, 50);
         let newCourse = {...course, needed};
-        (this.props.course || this.state.saved) ?
-            this.props.updateCourse(newCourse) : this.props.addCourse(newCourse);
         this.setState({
             ...this.state,
+            course: newCourse,
             saved: true
         })
     };
@@ -87,22 +86,12 @@ class CalculatorComponent extends Component {
         newEditing.splice(index, 1);
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
-        if (this.state.saved) {
-            this.props.updateCourse(course);
-            this.setState({
-                ...this.state,
-                editing: newEditing,
-                course,
-            });
-        } else if(this.state.course.name!==''){
-            this.props.addCourse(course);
-            this.setState({
-                ...this.state,
-                editing: newEditing,
-                course,
-                saved: true
-            });
-        }
+        this.setState({
+            ...this.state,
+            editing: newEditing,
+            course,
+            saved: true
+        });
     };
 
     updateCourseWorkCallback = (index) => (courseWork) => {
@@ -110,24 +99,25 @@ class CalculatorComponent extends Component {
         newCourseWork[index] = courseWork;
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
-        if (this.state.saved) {
-            this.props.updateCourse(course);
-            this.setState({
-                ...this.state,
-                course,
-            });
-        } else if(this.state.course.name!==''){
-            this.props.addCourse(course);
-            this.setState({
-                ...this.state,
-                course,
-                saved: true
-            });
-        }
+        this.setState({
+            ...this.state,
+            course,
+            saved: true
+        });
+    };
+
+    saveCourse = (e) => {
+        e.preventDefault();
+        let needToSave = !this.state.saved;
+        needToSave ? this.props.updateCourse(this.state.course) : this.props.addCourse(this.state.course);
+        alert('saved!')
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (!this.props.course) {
+            return;
+        }
+        if(prevState.course === this.state.course){
             return;
         }
         let course = this.props.course;
@@ -139,10 +129,12 @@ class CalculatorComponent extends Component {
 
     render() {
         return (
-            <div>
-                {this.state.needed > 0 && <h2>You need {this.state.needed}% on the exam to pass the course</h2>}
-                {this.state.needed < 0 && <h2>Sorry but you cannot pass this course :(</h2>}
-                <form onSubmit={this.onSubmit}>
+            <div style={{padding: '2vh'}}>
+                <div style={{height: '25vh'}}/>
+                {this.state.course.needed > 0 &&
+                <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
+                {this.state.course.needed < 0 && <h2>Sorry but you cannot pass this course :(</h2>}
+                <form onSubmit={this.saveCourse}>
                     <label style={{color: "white"}}>
                         Course Name:
                         <TextField
@@ -155,6 +147,8 @@ class CalculatorComponent extends Component {
                             }}
                             type="string"
                             required
+                            disabled={this.state.saved}
+                            defaultValue={this.state.course.name}
                             onChange={this.onNameChange}
                         />
                     </label>
@@ -169,6 +163,7 @@ class CalculatorComponent extends Component {
                             }}
                             type="number"
                             required
+                            defaultValue={this.state.course.grade}
                             onChange={this.onGradeChange}
                         />
                     </label>
@@ -182,7 +177,7 @@ class CalculatorComponent extends Component {
                                 className: this.props.classes.label
                             }}
                             type="number"
-                            required
+                            defaultValue={this.state.course.percentage}
                             onChange={this.onPercentageChange}
                         />
                         %
@@ -191,8 +186,10 @@ class CalculatorComponent extends Component {
                     <Button style={{backgroundColor: 'white'}}
                             onClick={() => this.setState({...this.state, editing: [...this.state.editing, {}]})}
                             color="secondary">Add Course Work</Button>
-                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
+                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
                             color="secondary">Calculate</Button>
+                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
+                            color="secondary">Save</Button>
                 </form>
                 {this.state.editing.length !== 0 &&
                 <div style={{backgroundColor: 'white', height: '1px', marginTop: '5px'}}/>}
@@ -226,14 +223,9 @@ class CalculatorComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     let courseName = state.course.map(e => e.name);
-    console.log(state)
-    if (ownProps.location) {
-        if(ownProps.location.state){
-            if(ownProps.location.state.course){
-                let course = state.course.find(e => e.name === ownProps.course.name);
-                return {courseName, course};
-            }
-        }
+    if (ownProps.location.state && ownProps.location.state.course) {
+        let course = state.course.find(e => e.name === ownProps.location.state.course.name);
+        return {courseName, course};
     }
     return {courseName}
 };
@@ -263,4 +255,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CalculatorComponent));
+export default withStyles(styles)(withRouter(connect(mapStateToProps, mapDispatchToProps)(CalculatorPage)));
