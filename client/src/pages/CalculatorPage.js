@@ -110,7 +110,7 @@ class CalculatorPage extends Component {
         e.preventDefault();
         let needToSave = !this.state.saved;
         needToSave ? this.props.addCourse(this.state.course) : this.props.updateCourse(this.state.course);
-        if(!this.props.course && !this.state.saved){
+        if (!this.props.course && !this.state.saved) {
             this.setState({
                 ...this.state,
                 saved: true
@@ -123,7 +123,7 @@ class CalculatorPage extends Component {
         if (!this.props.course) {
             return;
         }
-        if(prevState.course === this.state.course){
+        if (prevState.course === this.state.course) {
             return;
         }
         let course = this.props.course;
@@ -137,6 +137,14 @@ class CalculatorPage extends Component {
     render() {
         return (
             <div style={{padding: '2vh'}}>
+                <div style={{textAlign: 'right'}}>
+                    <Button
+                        color='secondary'
+                        onClick={()=>this.props.history.goBack()}
+                        style={{backgroundColor: 'white', margin: '10px'}}>
+                        Back To Main Page
+                    </Button>
+                </div>
                 <div style={{height: '25vh'}}/>
                 {this.state.course.needed > 0 &&
                 <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
