@@ -27,7 +27,7 @@ class MainPage extends Component {
                 <Button color="primary" onClick={this.onClick}>Add a new course</Button>
                 <h3>Saved courses</h3>
                 {this.props.course.map((e, ind) => (<CourseComponent key={ind} callback={this.removeCallback(ind)} course={e}/>))}
-                {this.props.course.length === 0 && 'No saved course at the moment'}
+                {this.props.course.length === 0 && 'No saved course at the moment...'}
             </div>
         )
     };
