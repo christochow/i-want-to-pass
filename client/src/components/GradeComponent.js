@@ -17,6 +17,7 @@ class GradeComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: this.props.course.name,
             grade: this.props.course.grade,
             mark: this.props.course.mark,
             outOf: this.props.course.outOf,
@@ -60,25 +61,33 @@ class GradeComponent extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
+        let grade = calculator.calculateGrade(this.state.mark, this.state.outOf);
         this.setState({
             ...this.state,
+            grade,
             editing: false
         });
         this.props.callback({
-            grade: calculator.calculateGrade(this.state.mark, this.state.outOf),
+            name: this.state.name,
+            grade,
             mark: this.state.mark,
             outOf: this.state.outOf,
             percentage: this.state.percentage
         });
+    };
 
-
+    onNameChange = (e) => {
+        this.setState({
+            ...this.state,
+            name: e.target.value
+        })
     };
 
     render() {
         return (
             <div style={{margin: '15px'}}>
                 {!this.state.editing && <div>
-                    {this.props.index}. Grade: {this.state.grade}, worth {this.state.percentage}%
+                    {this.props.index}. {this.state.name}, Grade: {this.state.grade}, worth {this.state.percentage}%
                     <Button onClick={() => this.setState({...this.state, editing: true})}>
                         Edit
                     </Button>
@@ -87,6 +96,22 @@ class GradeComponent extends Component {
                     </Button>
                 </div>}
                 {this.state.editing && <form onSubmit={this.onSubmit}>
+                    <label style={{color: "white"}}>
+                        Name:
+                        <TextField
+                            style={{marginLeft: "15px"}}
+                            inputProps={{
+                                className: this.props.classes.input,
+                            }}
+                            InputLabelProps={{
+                                className: this.props.classes.label
+                            }}
+                            type="string"
+                            required
+                            defaultValue={this.props.course.name}
+                            onChange={this.onNameChange}
+                        />
+                    </label>
                     <label style={{color: "white", marginLeft: "15px"}}>
                         Mark:
                         <TextField
@@ -145,7 +170,7 @@ class GradeComponent extends Component {
                         %
                     </label>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
-                            color="secondary">Calculate</Button>
+                            color="secondary">Save</Button>
                 </form>}
             </div>
         );

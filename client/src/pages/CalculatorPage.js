@@ -146,7 +146,6 @@ class CalculatorPage extends Component {
                 saved: true,
                 dirty: false
         });
-        alert('saved!')
     };
 
     render() {
@@ -232,6 +231,7 @@ class CalculatorPage extends Component {
                         key={index}
                         editing={true}
                         course={{
+                            name: '',
                             grade: 0,
                             mark: 0,
                             outOf: 0,
