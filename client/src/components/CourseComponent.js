@@ -10,9 +10,10 @@ function CourseComponent(props) {
             <Button
                 color='secondary'
                 style={{backgroundColor: 'white'}}
-                onClick={() => history.push({pathname: '/i-want-to-pass/course', state: {course: props.course}})}>
-                {props.course.name}
-            </Button>
+                onClick={() => history.push({
+                    pathname: '/course',
+                    state: {course: props.course}
+                })}>{props.course.name}</Button>
         </div>
     );
 }

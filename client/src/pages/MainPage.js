@@ -11,7 +11,7 @@ class MainPage extends Component {
     }
 
     onClick = () => {
-        this.props.history.push('/i-want-to-pass/course')
+        this.props.history.push('/course')
     };
 
     render() {
