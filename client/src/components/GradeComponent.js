@@ -17,11 +17,7 @@ class GradeComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: this.props.course.name,
-            grade: this.props.course.grade,
-            mark: this.props.course.mark,
-            outOf: this.props.course.outOf,
-            percentage: this.props.course.percentage,
+            ...this.props.course,
             editing: this.props.editing
         }
     }
@@ -171,6 +167,11 @@ class GradeComponent extends Component {
                     </label>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
                             color="secondary">Save</Button>
+                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}}
+                            onClick={() => this.props.cancelCallback ?
+                                this.props.cancelCallback() :
+                                this.setState({...this.props.course, editing: false})}
+                            color="secondary">Cancel</Button>
                 </form>}
             </div>
         );

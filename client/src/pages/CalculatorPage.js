@@ -96,8 +96,8 @@ class CalculatorPage extends Component {
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
         let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
-        let grade = newCourseWork.reduce((a,b)=>a+b.grade*b.percentage,0)/total;
-        if(!isNaN(grade)){
+        let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
+        if (!isNaN(grade)) {
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -114,8 +114,8 @@ class CalculatorPage extends Component {
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
         let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
-        let grade = newCourseWork.reduce((a,b)=>a+b.grade*b.percentage,0)/total;
-        if(!isNaN(grade)){
+        let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
+        if (!isNaN(grade)) {
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -125,9 +125,9 @@ class CalculatorPage extends Component {
         });
     };
 
-    deleteCallback = (index) => ()=>{
+    deleteCallback = (index) => () => {
         let newCourseWork = [...this.state.course.courseWork];
-        newCourseWork.splice(index,1);
+        newCourseWork.splice(index, 1);
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
         this.setState({
@@ -142,9 +142,18 @@ class CalculatorPage extends Component {
         let needToSave = !this.state.saved;
         needToSave ? this.props.addCourse(this.state.course) : this.props.updateCourse(this.state.course);
         this.setState({
-                ...this.state,
-                saved: true,
-                dirty: false
+            ...this.state,
+            saved: true,
+            dirty: false
+        });
+    };
+
+    cancelCallback = index => () => {
+        let newEditing = [...this.state.editing];
+        newEditing.splice(index, 1);
+        this.setState({
+            ...this.state,
+            editing: newEditing
         });
     };
 
@@ -237,6 +246,7 @@ class CalculatorPage extends Component {
                             outOf: 0,
                             percentage: 0.0
                         }}
+                        cancelCallback={this.cancelCallback(index)}
                         callback={this.newCourseWorkCallback(index)}
                     />
                 ))}
@@ -246,10 +256,11 @@ class CalculatorPage extends Component {
                 <h4>Course Work</h4>}
                 {this.state.course.courseWork.map((e, index) => (
                     <GradeComponent
-                        key={index+1}
-                        index={index+1}
+                        key={index + 1}
+                        index={index + 1}
                         course={{...e}}
                         editing={false}
+                        cancelCallback={null}
                         deleteCallback={this.deleteCallback(index)}
                         callback={this.updateCourseWorkCallback(index)}
                     />
