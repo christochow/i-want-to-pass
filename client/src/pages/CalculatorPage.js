@@ -91,7 +91,7 @@ class CalculatorPage extends Component {
     newCourseWorkCallback = (index) => (courseWork) => {
         let newEditing = [...this.state.editing];
         let newCourseWork = [...this.state.course.courseWork];
-        newCourseWork.unshift(courseWork);
+        newCourseWork.push(courseWork);
         newEditing.splice(index, 1);
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
