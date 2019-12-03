@@ -6,10 +6,6 @@ import CourseComponent from "../components/CourseComponent";
 
 class MainPage extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     onClick = () => {
         this.props.history.push('/course')
     };
