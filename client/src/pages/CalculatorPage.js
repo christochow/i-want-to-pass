@@ -170,9 +170,9 @@ class CalculatorPage extends Component {
                     </Button>
                 </div>
                 <div style={{height: '25vh'}}/>
-                {this.state.calculated && this.state.course.needed >= 0 &&
+                {this.state.calculated && this.state.valid && this.state.course.needed >= 0 &&
                 <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
-                {this.state.calculated && this.state.course.needed < 0
+                {this.state.calculated && this.state.valid && this.state.course.needed < 0
                 && <h2>Sorry but you cannot pass this course :(</h2>}
                 {!this.state.valid && <h2>Your Exam and course weighting worth must add up to 100!</h2>}
                 <form onSubmit={this.saveCourse}>
