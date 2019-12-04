@@ -79,6 +79,18 @@ class GradeComponent extends Component {
         })
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props === prevProps){
+            return;
+        }
+        console.log(this.props)
+        this.setState({
+            ...prevState,
+            course: this.props.course,
+            editing: this.props.editing
+        })
+    }
+
     render() {
         return (
             <div style={{margin: '15px'}}>

@@ -98,7 +98,7 @@ class CalculatorPage extends Component {
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
         if (isNaN(grade)) {
             course.grade = 0;
-        } else{
+        } else {
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -118,7 +118,7 @@ class CalculatorPage extends Component {
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
         if (isNaN(grade)) {
             course.grade = 0;
-        } else{
+        } else {
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -137,7 +137,7 @@ class CalculatorPage extends Component {
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
         if (isNaN(grade)) {
             course.grade = 0;
-        } else{
+        } else {
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -238,7 +238,16 @@ class CalculatorPage extends Component {
                     </label>
                     <div style={{height: '15px'}}/>
                     <Button style={{backgroundColor: 'white'}}
-                            onClick={() => this.setState({...this.state, editing: [...this.state.editing, {}]})}
+                            onClick={() => this.setState({
+                                ...this.state, editing: [...this.state.editing, {
+                                    name: '',
+                                    grade: 0,
+                                    mark: 0,
+                                    outOf: 0,
+                                    percentage: 0.0
+                                }]
+                            })}
+                            disabled={this.state.editing.length>1}
                             color="secondary">Add Course Work</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
                             color="secondary">Calculate</Button>
@@ -250,14 +259,9 @@ class CalculatorPage extends Component {
                 {this.state.editing.map((e, index) => (
                     <GradeComponent
                         key={index}
+                        ind ={index}
                         editing={true}
-                        course={{
-                            name: '',
-                            grade: 0,
-                            mark: 0,
-                            outOf: 0,
-                            percentage: 0.0
-                        }}
+                        course={{...e}}
                         cancelCallback={this.cancelCallback(index)}
                         callback={this.newCourseWorkCallback(index)}
                     />
