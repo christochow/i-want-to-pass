@@ -167,6 +167,8 @@ class CalculatorPage extends Component {
         });
     };
 
+    genKey = () => new Date().valueOf()*Math.random();
+
     render() {
         return (
             <div style={{padding: '2vh'}}>
@@ -239,7 +241,7 @@ class CalculatorPage extends Component {
                     <div style={{height: '15px'}}/>
                     <Button style={{backgroundColor: 'white'}}
                             onClick={() => this.setState({
-                                ...this.state, editing: [...this.state.editing, new Date().getUTCMilliseconds()]
+                                ...this.state, editing: [...this.state.editing, this.genKey()]
                             })}
                             color="secondary">Add Course Work</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
@@ -259,7 +261,6 @@ class CalculatorPage extends Component {
                             mark: 0,
                             outOf: 0,
                             percentage: 0.0,
-                            key:e
                         }}
                         cancelCallback={this.cancelCallback(index)}
                         callback={this.newCourseWorkCallback(index)}
@@ -271,7 +272,7 @@ class CalculatorPage extends Component {
                 <h4>Course Work</h4>}
                 {this.state.course.courseWork.map((e, index) => (
                     <GradeComponent
-                        key={e.key}
+                        key={this.genKey()}
                         index={index + 1}
                         course={{...e}}
                         editing={false}

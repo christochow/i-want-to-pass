@@ -69,7 +69,6 @@ class GradeComponent extends Component {
             mark: this.state.mark,
             outOf: this.state.outOf,
             percentage: this.state.percentage,
-            key: this.state.key
         });
     };
 
