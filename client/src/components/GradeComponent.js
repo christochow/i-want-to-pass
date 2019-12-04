@@ -68,7 +68,8 @@ class GradeComponent extends Component {
             grade,
             mark: this.state.mark,
             outOf: this.state.outOf,
-            percentage: this.state.percentage
+            percentage: this.state.percentage,
+            key: this.state.key
         });
     };
 
@@ -78,18 +79,6 @@ class GradeComponent extends Component {
             name: e.target.value
         })
     };
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props === prevProps){
-            return;
-        }
-        console.log(this.props)
-        this.setState({
-            ...prevState,
-            course: this.props.course,
-            editing: this.props.editing
-        })
-    }
 
     render() {
         return (

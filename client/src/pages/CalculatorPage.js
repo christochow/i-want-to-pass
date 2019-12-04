@@ -88,6 +88,7 @@ class CalculatorPage extends Component {
     };
 
     newCourseWorkCallback = (index) => (courseWork) => {
+        console.log(courseWork)
         let newEditing = [...this.state.editing];
         let newCourseWork = [...this.state.course.courseWork];
         newCourseWork.push(courseWork);
@@ -239,15 +240,8 @@ class CalculatorPage extends Component {
                     <div style={{height: '15px'}}/>
                     <Button style={{backgroundColor: 'white'}}
                             onClick={() => this.setState({
-                                ...this.state, editing: [...this.state.editing, {
-                                    name: '',
-                                    grade: 0,
-                                    mark: 0,
-                                    outOf: 0,
-                                    percentage: 0.0
-                                }]
+                                ...this.state, editing: [...this.state.editing, new Date().getUTCMilliseconds()]
                             })}
-                            disabled={this.state.editing.length>0}
                             color="secondary">Add Course Work</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
                             color="secondary">Calculate</Button>
@@ -258,10 +252,16 @@ class CalculatorPage extends Component {
                 <div style={{backgroundColor: 'white', height: '1px', marginTop: '5px'}}/>}
                 {this.state.editing.map((e, index) => (
                     <GradeComponent
-                        key={index}
-                        ind ={index}
+                        key={e}
                         editing={true}
-                        course={{...e}}
+                        course={{
+                            name: '',
+                            grade: 0,
+                            mark: 0,
+                            outOf: 0,
+                            percentage: 0.0,
+                            key:e
+                        }}
                         cancelCallback={this.cancelCallback(index)}
                         callback={this.newCourseWorkCallback(index)}
                     />
@@ -272,7 +272,7 @@ class CalculatorPage extends Component {
                 <h4>Course Work</h4>}
                 {this.state.course.courseWork.map((e, index) => (
                     <GradeComponent
-                        key={index + 1}
+                        key={e.key}
                         index={index + 1}
                         course={{...e}}
                         editing={false}
