@@ -247,7 +247,7 @@ class CalculatorPage extends Component {
                                     percentage: 0.0
                                 }]
                             })}
-                            disabled={this.state.editing.length>1}
+                            disabled={this.state.editing.length>0}
                             color="secondary">Add Course Work</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
                             color="secondary">Calculate</Button>
