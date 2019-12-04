@@ -97,7 +97,9 @@ class CalculatorPage extends Component {
         course.courseWork = newCourseWork;
         let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
-        if (!isNaN(grade)) {
+        if (isNaN(grade)) {
+            course.grade = 0;
+        } else{
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -115,7 +117,9 @@ class CalculatorPage extends Component {
         course.courseWork = newCourseWork;
         let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
-        if (!isNaN(grade)) {
+        if (isNaN(grade)) {
+            course.grade = 0;
+        } else{
             course.grade = Math.round(grade);
         }
         this.setState({
@@ -132,7 +136,9 @@ class CalculatorPage extends Component {
         course.courseWork = newCourseWork;
         let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
         let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
-        if (!isNaN(grade)) {
+        if (isNaN(grade)) {
+            course.grade = 0;
+        } else{
             course.grade = Math.round(grade);
         }
         this.setState({
