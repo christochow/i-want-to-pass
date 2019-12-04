@@ -130,6 +130,11 @@ class CalculatorPage extends Component {
         newCourseWork.splice(index, 1);
         let course = {...this.state.course};
         course.courseWork = newCourseWork;
+        let total = course.courseWork.reduce((a, b) => a + b.percentage, 0);
+        let grade = newCourseWork.reduce((a, b) => a + b.grade * b.percentage, 0) / total;
+        if (!isNaN(grade)) {
+            course.grade = Math.round(grade);
+        }
         this.setState({
             ...this.state,
             course,
