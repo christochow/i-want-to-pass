@@ -88,7 +88,6 @@ class CalculatorPage extends Component {
     };
 
     newCourseWorkCallback = (index) => (courseWork) => {
-        console.log(courseWork)
         let newEditing = [...this.state.editing];
         let newCourseWork = [...this.state.course.courseWork];
         newCourseWork.push(courseWork);
