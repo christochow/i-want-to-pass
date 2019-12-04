@@ -81,7 +81,6 @@ class CalculatorPage extends Component {
         this.setState({
             ...this.state,
             course: newCourse,
-            saved: true,
             valid: true,
             calculated: true,
             dirty: true
