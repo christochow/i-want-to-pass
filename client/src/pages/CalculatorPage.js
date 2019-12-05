@@ -20,8 +20,12 @@ const styles = {
 class CalculatorPage extends Component {
     constructor(props) {
         super(props);
+        let course = this.props.course;
+        if (course) {
+            course.courseWork.forEach(e => e.id = this.genKey());
+        }
         this.state = {
-            course: this.props.course ? this.props.course : {
+            course: course ? course : {
                 name: '',
                 grade: 0,
                 percentage: 0.0,
@@ -32,7 +36,7 @@ class CalculatorPage extends Component {
             editing: [],
             calculated: false,
             dirty: false,
-            saved: !(this.props.course === undefined)
+            saved: !(course === undefined || course === null)
         };
         this.numberInputProps = {
             className: this.props.classes.input,
@@ -44,9 +48,17 @@ class CalculatorPage extends Component {
 
     onPercentageChange = (e) => {
         if (isNaN(parseInt(e.target.value))) {
+            this.setState({
+                ...this.state,
+                valid: false
+            });
             return;
         }
         if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
+            this.setState({
+                ...this.state,
+                valid: false
+            });
             return;
         }
         let course = {...this.state.course, percentage: parseInt(e.target.value)};
@@ -90,6 +102,7 @@ class CalculatorPage extends Component {
     newCourseWorkCallback = (index) => (courseWork) => {
         let newEditing = [...this.state.editing];
         let newCourseWork = [...this.state.course.courseWork];
+        courseWork.id = this.genKey();
         newCourseWork.push(courseWork);
         newEditing.splice(index, 1);
         let course = {...this.state.course};
@@ -193,7 +206,8 @@ class CalculatorPage extends Component {
                     <h2>Congrats! You've passed the course!</h2>}
                     {this.state.calculated && this.state.valid && this.state.course.needed < 0
                     && <h2>Sorry but you cannot pass this course :(</h2>}
-                    {!this.state.valid && <h2>Your Exam and course work weighting must add up to 100!</h2>}
+                    {!this.state.valid && this.state.calculated &&
+                    <h2>Your Exam and course work weighting must add up to 100!</h2>}
                 </div>
                 <div style={{height: '25vh'}}/>
                 <form onSubmit={this.saveCourse}>
@@ -279,7 +293,7 @@ class CalculatorPage extends Component {
                 <h4>Course Work</h4>}
                 {this.state.course.courseWork.map((e, index) => (
                     <GradeComponent
-                        key={this.genKey()}
+                        key={e.id}
                         index={index + 1}
                         course={{...e}}
                         editing={false}
