@@ -50,17 +50,9 @@ class CalculatorPage extends Component {
 
     onPercentageChange = (e) => {
         if (isNaN(parseInt(e.target.value))) {
-            this.setState({
-                ...this.state,
-                inputValid: false
-            });
             return;
         }
         if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
-            this.setState({
-                ...this.state,
-                inputValid: false
-            });
             return;
         }
         let course = {...this.state.course, percentage: parseInt(e.target.value)};
@@ -72,6 +64,13 @@ class CalculatorPage extends Component {
         })
     };
     onNameChange = (e) => {
+        if(!e.target.value){
+            console.log(11)
+            this.setState({
+                ...this.state,
+                inputValid: false
+            });
+        }
         let course = {...this.state.course, name: e.target.value};
         this.setState({
             ...this.state,
@@ -80,16 +79,8 @@ class CalculatorPage extends Component {
         })
     };
 
-    onSubmit = () => {
-        if (!this.state.inputValid) {
-            this.setState({
-                ...this.state,
-                valid: true,
-                showInvalid: true,
-                calculated: true
-            });
-            return;
-        }
+    onSubmit = (e) => {
+        e.preventDefault();
         let valid = this.state.course.courseWork.reduce((a, b) => a + b.percentage, 0) + this.state.course.percentage === 100;
         if (!valid) {
             this.setState({
@@ -174,8 +165,16 @@ class CalculatorPage extends Component {
         });
     };
 
-    saveCourse = (e) => {
-        e.preventDefault();
+    saveCourse = () => {
+        if (!this.state.inputValid || !this.state.course.name) {
+            this.setState({
+                ...this.state,
+                valid: true,
+                showInvalid: true,
+                calculated: true
+            });
+            return;
+        }
         let needToSave = !this.state.saved;
         needToSave ? this.props.addCourse(this.state.course) : this.props.updateCourse(this.state.course);
         this.setState({
@@ -223,10 +222,10 @@ class CalculatorPage extends Component {
                     {this.state.showInvalid && !this.state.valid &&
                     <h2>Your Exam and course work weighting must add up to 100!</h2>}
                     {this.state.showInvalid && this.state.valid &&
-                    <h2>Please Enter a valid input!</h2>}
+                    <h2>Please Fill in the name for the course!</h2>}
                 </div>}
                 <div style={{height: '25vh'}}/>
-                <form onSubmit={this.saveCourse}>
+                <form onSubmit={this.onSubmit}>
                     <label style={{color: "white"}}>
                         Course Name:
                         <TextField
@@ -238,7 +237,6 @@ class CalculatorPage extends Component {
                                 className: this.props.classes.label
                             }}
                             type="string"
-                            required
                             disabled={this.state.saved}
                             defaultValue={this.state.course.name}
                             onChange={this.onNameChange}
@@ -281,9 +279,9 @@ class CalculatorPage extends Component {
                                 ...this.state, editing: [...this.state.editing, this.genKey()]
                             })}
                             color="secondary">Add Course Work</Button>
-                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.onSubmit}
-                            color="secondary">Calculate</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
+                            color="secondary">Calculate</Button>
+                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} onClick={this.saveCourse}
                             color="secondary">Save</Button>
                 </form>
                 {this.state.editing.length !== 0 &&
