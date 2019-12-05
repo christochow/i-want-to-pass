@@ -83,13 +83,13 @@ class GradeComponent extends Component {
     render() {
         return (
             <div style={{margin: '15px'}}>
-                {!this.state.editing && <div>
+                {!this.state.editing && <div style={{paddingLeft: '50px'}}>
                     {this.props.index}. Name: {this.state.name}, Grade: {this.state.grade},
                     Weighting: {this.state.percentage}%
-                    <Button onClick={() => this.setState({...this.state, editing: true})}>
+                    <Button style={{marginLeft:'5px', marginRight:'5px', color: '#A0A0A0'}} onClick={() => this.setState({...this.state, editing: true})}>
                         Edit
                     </Button>
-                    <Button onClick={() => this.props.deleteCallback()}>
+                    <Button style={{color: '#A0A0A0'}} onClick={() => this.props.deleteCallback()}>
                         Delete
                     </Button>
                 </div>}
@@ -167,7 +167,7 @@ class GradeComponent extends Component {
                         />
                         %
                     </label>
-                    <Button style={{backgroundColor: 'white', marginLeft: '5px'}} type="submit"
+                    <Button style={{backgroundColor: 'white', marginLeft: '10px'}} type="submit"
                             color="secondary">Save</Button>
                     <Button style={{backgroundColor: 'white', marginLeft: '5px'}}
                             onClick={() => this.props.cancelCallback ?

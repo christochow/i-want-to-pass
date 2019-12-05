@@ -14,7 +14,7 @@ function CourseComponent(props) {
                     pathname: '/course',
                     state: {course: props.course}
                 })}>{props.course.name}</Button>
-            <Button style={{marginTop: '5px'}} onClick={() => props.callback()}>Delete</Button>
+            <Button style={{marginTop: '5px', color: '#A0A0A0'}} onClick={() => props.callback()}>Delete</Button>
         </div>
     );
 }
