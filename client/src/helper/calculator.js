@@ -3,7 +3,10 @@ let calculator = {
         examPercentage = examPercentage / 100;
         let div = examPercentage;
         if(div === 0){
-            div = 1;
+            if(termGrade>=50){
+                return 0;
+            }
+            return -1;
         }
         let needed = Math.ceil((gradeWanted - termGrade * (1 - examPercentage)) / (div));
         if (needed > 100.0) {
