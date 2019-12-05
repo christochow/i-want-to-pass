@@ -32,8 +32,8 @@ class CalculatorPage extends Component {
                 needed: 0,
                 courseWork: []
             },
-            inputValid: true,
-            showInvalid: false,
+            perValid: true,
+            nameValid: true,
             valid: true,
             editing: [],
             calculated: false,
@@ -50,31 +50,43 @@ class CalculatorPage extends Component {
 
     onPercentageChange = (e) => {
         if (isNaN(parseInt(e.target.value))) {
+            this.setState({
+                ...this.state,
+                perValid: false,
+                dirty: true
+            });
             return;
         }
         if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
+            this.setState({
+                ...this.state,
+                perValid: false,
+                dirty: true
+            });
             return;
         }
         let course = {...this.state.course, percentage: parseInt(e.target.value)};
         this.setState({
             ...this.state,
             course,
-            dirty: true,
-            inputValid: true
+            perValid: true,
+            dirty: true
         })
     };
     onNameChange = (e) => {
-        if(!e.target.value){
-            console.log(11)
+        if(e.target.value === ''){
             this.setState({
                 ...this.state,
-                inputValid: false
+                nameValid: false,
+                dirty: true
             });
+            return;
         }
         let course = {...this.state.course, name: e.target.value};
         this.setState({
             ...this.state,
             course,
+            nameValid: true,
             dirty: true
         })
     };
@@ -86,7 +98,6 @@ class CalculatorPage extends Component {
             this.setState({
                 ...this.state,
                 valid: false,
-                showInvalid: true,
                 calculated: true
             });
             return;
@@ -98,9 +109,8 @@ class CalculatorPage extends Component {
             ...this.state,
             course: newCourse,
             valid: true,
-            showInvalid: false,
             calculated: true,
-            dirty: true
+            dirty: this.state.dirty || needed !== this.state.course.needed
         })
     };
 
@@ -166,13 +176,14 @@ class CalculatorPage extends Component {
     };
 
     saveCourse = () => {
-        if (!this.state.inputValid || !this.state.course.name) {
+        if (this.state.course.name === '') {
             this.setState({
                 ...this.state,
-                valid: true,
-                showInvalid: true,
-                calculated: true
+                nameValid: false
             });
+            return;
+        }
+        if(!this.state.perValid || !this.state.nameValid) {
             return;
         }
         let needToSave = !this.state.saved;
@@ -211,18 +222,15 @@ class CalculatorPage extends Component {
                     width: '100vw',
                     position: 'absolute',
                     left: 0,
-                    top: !this.state.showInvalid && this.state.valid && this.state.course.needed === 0 ? '20vh' : '23vh'
+                    top: this.state.valid && this.state.course.needed === 0 ?'20vh' : '23vh'
                 }}>
-                    {!this.state.showInvalid && this.state.valid && this.state.course.needed >= 0 &&
+                    {this.state.valid && this.state.course.needed >= 0 &&
                     <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
-                    {!this.state.showInvalid && this.state.valid && this.state.course.needed === 0 &&
+                    {this.state.valid && this.state.course.needed === 0 &&
                     <h2>Congrats! You've passed the course!</h2>}
-                    {!this.state.showInvalid && this.state.valid && this.state.course.needed === -1
+                    {this.state.valid && this.state.course.needed === -1
                     && <h2>Sorry but you cannot pass this course :(</h2>}
-                    {this.state.showInvalid && !this.state.valid &&
-                    <h2>Your Exam and course work weighting must add up to 100!</h2>}
-                    {this.state.showInvalid && this.state.valid &&
-                    <h2>Please Fill in the name for the course!</h2>}
+                    {!this.state.valid && <h2>Your Exam and course work weighting must add up to 100!</h2>}
                 </div>}
                 <div style={{height: '25vh'}}/>
                 <form onSubmit={this.onSubmit}>
@@ -237,6 +245,7 @@ class CalculatorPage extends Component {
                                 className: this.props.classes.label
                             }}
                             type="string"
+                            error={!this.state.nameValid}
                             disabled={this.state.saved}
                             defaultValue={this.state.course.name}
                             onChange={this.onNameChange}
@@ -268,6 +277,8 @@ class CalculatorPage extends Component {
                                 className: this.props.classes.label
                             }}
                             type="number"
+                            required
+                            error={!this.state.perValid}
                             defaultValue={this.state.course.percentage.toString()}
                             onChange={this.onPercentageChange}
                         />
