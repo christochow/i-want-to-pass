@@ -32,6 +32,8 @@ class CalculatorPage extends Component {
                 needed: 0,
                 courseWork: []
             },
+            inputValid: true,
+            showInvalid: false,
             valid: true,
             editing: [],
             calculated: false,
@@ -50,14 +52,14 @@ class CalculatorPage extends Component {
         if (isNaN(parseInt(e.target.value))) {
             this.setState({
                 ...this.state,
-                valid: false
+                inputValid: false
             });
             return;
         }
         if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
             this.setState({
                 ...this.state,
-                valid: false
+                inputValid: false
             });
             return;
         }
@@ -65,7 +67,8 @@ class CalculatorPage extends Component {
         this.setState({
             ...this.state,
             course,
-            dirty: true
+            dirty: true,
+            inputValid: true
         })
     };
     onNameChange = (e) => {
@@ -78,11 +81,21 @@ class CalculatorPage extends Component {
     };
 
     onSubmit = () => {
+        if (!this.state.inputValid) {
+            this.setState({
+                ...this.state,
+                valid: true,
+                showInvalid: true,
+                calculated: true
+            });
+            return;
+        }
         let valid = this.state.course.courseWork.reduce((a, b) => a + b.percentage, 0) + this.state.course.percentage === 100;
         if (!valid) {
             this.setState({
                 ...this.state,
                 valid: false,
+                showInvalid: true,
                 calculated: true
             });
             return;
@@ -94,6 +107,7 @@ class CalculatorPage extends Component {
             ...this.state,
             course: newCourse,
             valid: true,
+            showInvalid: false,
             calculated: true,
             dirty: true
         })
@@ -194,21 +208,23 @@ class CalculatorPage extends Component {
                         Back To Main Page
                     </Button>
                 </div>
-                <div style={{
+                {this.state.calculated && <div style={{
                     width: '100vw',
                     position: 'absolute',
                     left: 0,
-                    top: this.state.course.needed === 0 && this.state.valid ? '20vh' : '23vh'
+                    top: !this.state.showInvalid && this.state.valid && this.state.course.needed === 0 ? '20vh' : '23vh'
                 }}>
-                    {this.state.calculated && this.state.valid && this.state.course.needed >= 0 &&
+                    {!this.state.showInvalid && this.state.valid && this.state.course.needed >= 0 &&
                     <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
-                    {this.state.calculated && this.state.valid && this.state.course.needed === 0 &&
+                    {!this.state.showInvalid && this.state.valid && this.state.course.needed === 0 &&
                     <h2>Congrats! You've passed the course!</h2>}
-                    {this.state.calculated && this.state.valid && this.state.course.needed < 0
+                    {!this.state.showInvalid && this.state.valid && this.state.course.needed === -1
                     && <h2>Sorry but you cannot pass this course :(</h2>}
-                    {!this.state.valid && this.state.calculated &&
+                    {this.state.showInvalid && !this.state.valid &&
                     <h2>Your Exam and course work weighting must add up to 100!</h2>}
-                </div>
+                    {this.state.showInvalid && this.state.valid &&
+                    <h2>Please Enter a valid input!</h2>}
+                </div>}
                 <div style={{height: '25vh'}}/>
                 <form onSubmit={this.saveCourse}>
                     <label style={{color: "white"}}>
