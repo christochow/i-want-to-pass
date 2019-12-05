@@ -74,7 +74,7 @@ class CalculatorPage extends Component {
         })
     };
     onNameChange = (e) => {
-        if(e.target.value === ''){
+        if (e.target.value === '') {
             this.setState({
                 ...this.state,
                 nameValid: false,
@@ -183,7 +183,7 @@ class CalculatorPage extends Component {
             });
             return;
         }
-        if(!this.state.perValid || !this.state.nameValid) {
+        if (!this.state.perValid || !this.state.nameValid) {
             return;
         }
         let needToSave = !this.state.saved;
@@ -222,7 +222,7 @@ class CalculatorPage extends Component {
                     width: '100vw',
                     position: 'absolute',
                     left: 0,
-                    top: this.state.valid && this.state.course.needed === 0 ?'20vh' : '23vh'
+                    top: this.state.valid && this.state.course.needed === 0 ? '20vh' : '23vh'
                 }}>
                     {this.state.valid && this.state.course.needed >= 0 &&
                     <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
@@ -256,11 +256,13 @@ class CalculatorPage extends Component {
                         Term grade:
                         <TextField
                             style={{marginLeft: "15px"}}
-                            inputProps={this.numberInputProps}
+                            inputProps={{
+                                className: this.props.classes.input,
+                            }}
                             InputLabelProps={{
                                 className: this.props.classes.label
                             }}
-                            type="number"
+                            type="string"
                             required
                             disabled={true}
                             value={this.state.course.grade.toString()}
