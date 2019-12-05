@@ -43,11 +43,11 @@ class CalculatorPage extends Component {
     }
 
     onPercentageChange = (e) => {
-        if (e.target.value > 100 || e.target.value < 0) {
+        if (isNaN(parseInt(e.target.value))) {
             return;
         }
-        if (isNaN(parseInt(e.target.value))) {
-            return
+        if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
+            return;
         }
         let course = {...this.state.course, percentage: parseInt(e.target.value)};
         this.setState({
@@ -181,14 +181,21 @@ class CalculatorPage extends Component {
                         Back To Main Page
                     </Button>
                 </div>
+                <div style={{
+                    width: '100vw',
+                    position: 'absolute',
+                    left: 0,
+                    top: this.state.course.needed === 0 && this.state.valid ? '20vh' : '23vh'
+                }}>
+                    {this.state.calculated && this.state.valid && this.state.course.needed >= 0 &&
+                    <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
+                    {this.state.calculated && this.state.valid && this.state.course.needed === 0 &&
+                    <h2>Congrats! You've passed the course!</h2>}
+                    {this.state.calculated && this.state.valid && this.state.course.needed < 0
+                    && <h2>Sorry but you cannot pass this course :(</h2>}
+                    {!this.state.valid && <h2>Your Exam and course work weighting must add up to 100!</h2>}
+                </div>
                 <div style={{height: '25vh'}}/>
-                {this.state.calculated && this.state.valid && this.state.course.needed >= 0 &&
-                <h2>You need {this.state.course.needed}% on the exam to pass the course</h2>}
-                {this.state.calculated && this.state.valid && this.state.course.needed === 0 &&
-                <h2>Congrats! You've passed the course!</h2>}
-                {this.state.calculated && this.state.valid && this.state.course.needed < 0
-                && <h2>Sorry but you cannot pass this course :(</h2>}
-                {!this.state.valid && <h2>Your Exam and course work weighting must add up to 100!</h2>}
                 <form onSubmit={this.saveCourse}>
                     <label style={{color: "white"}}>
                         Course Name:
