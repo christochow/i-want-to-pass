@@ -167,7 +167,7 @@ class CalculatorPage extends Component {
         });
     };
 
-    genKey = () => new Date().valueOf()*Math.random();
+    genKey = () => new Date().valueOf() * Math.random();
 
     render() {
         return (

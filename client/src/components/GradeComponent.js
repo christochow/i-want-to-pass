@@ -83,7 +83,8 @@ class GradeComponent extends Component {
         return (
             <div style={{margin: '15px'}}>
                 {!this.state.editing && <div>
-                    {this.props.index}. Name: {this.state.name}, Grade: {this.state.grade}, Weighting: {this.state.percentage}%
+                    {this.props.index}. Name: {this.state.name}, Grade: {this.state.grade},
+                    Weighting: {this.state.percentage}%
                     <Button onClick={() => this.setState({...this.state, editing: true})}>
                         Edit
                     </Button>

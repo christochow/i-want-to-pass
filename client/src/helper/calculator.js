@@ -4,7 +4,7 @@ let calculator = {
         let needed = Math.ceil((gradeWanted - termGrade * (1 - examPercentage)) / (examPercentage));
         if (needed > 100.0) {
             return -1;
-        } else if (needed < 0.0){
+        } else if (needed < 0.0) {
             return 0;
         }
         return needed;
