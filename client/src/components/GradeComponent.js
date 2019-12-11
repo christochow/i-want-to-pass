@@ -23,35 +23,38 @@ class GradeComponent extends Component {
     }
 
     onMarkChange = (e) => {
-        if (isNaN(parseInt(e.target.value))) {
+        let val = parseInt(e.target.value);
+        if (isNaN(val)) {
             return
         }
         this.setState({
             ...this.state,
-            mark: parseInt(e.target.value),
+            mark: val,
         })
     };
 
     onOutOfChange = (e) => {
-        if (isNaN(parseInt(e.target.value))) {
+        let val = parseInt(e.target.value);
+        if (isNaN(val)) {
             return
         }
         this.setState({
             ...this.state,
-            outOf: parseInt(e.target.value),
+            outOf: val,
         })
     };
 
     onPercentageChange = (e) => {
-        if (e.target.value > 100 || e.target.value < 0) {
-            return;
-        }
-        if (isNaN(parseInt(e.target.value))) {
+        let val = parseInt(e.target.value);
+        if (isNaN(val)) {
             return
+        }
+        if (val > 100 || val < 0) {
+            return;
         }
         this.setState({
             ...this.state,
-            percentage: parseInt(e.target.value),
+            percentage: val,
         });
     };
 
