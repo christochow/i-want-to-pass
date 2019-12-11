@@ -49,7 +49,8 @@ class CalculatorPage extends Component {
     }
 
     onPercentageChange = (e) => {
-        if (isNaN(parseInt(e.target.value))) {
+        let value = parseInt(e.target.value);
+        if (isNaN(value)) {
             this.setState({
                 ...this.state,
                 perValid: false,
@@ -57,7 +58,7 @@ class CalculatorPage extends Component {
             });
             return;
         }
-        if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0) {
+        if (value > 100 || value < 0) {
             this.setState({
                 ...this.state,
                 perValid: false,
@@ -65,7 +66,7 @@ class CalculatorPage extends Component {
             });
             return;
         }
-        let course = {...this.state.course, percentage: parseInt(e.target.value)};
+        let course = {...this.state.course, percentage: value};
         this.setState({
             ...this.state,
             course,
@@ -74,7 +75,8 @@ class CalculatorPage extends Component {
         })
     };
     onNameChange = (e) => {
-        if (e.target.value === '') {
+        let name = e.target.value;
+        if (name === '') {
             this.setState({
                 ...this.state,
                 nameValid: false,
@@ -82,7 +84,7 @@ class CalculatorPage extends Component {
             });
             return;
         }
-        let course = {...this.state.course, name: e.target.value};
+        let course = {...this.state.course, name: name};
         this.setState({
             ...this.state,
             course,
