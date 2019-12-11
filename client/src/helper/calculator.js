@@ -2,8 +2,8 @@ let calculator = {
     calculateRequired: (termGrade, examPercentage, gradeWanted) => {
         examPercentage = examPercentage / 100;
         let div = examPercentage;
-        if(div === 0){
-            if(termGrade>=50){
+        if (div === 0) {
+            if (termGrade >= 50) {
                 return 0;
             }
             return -1;
