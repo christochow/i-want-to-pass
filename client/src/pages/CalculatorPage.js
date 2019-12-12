@@ -93,7 +93,7 @@ class CalculatorPage extends Component {
         })
     };
 
-    onSubmit = (e) => {
+    onCalculate = (e) => {
         e.preventDefault();
         let valid = this.state.course.courseWork.reduce((a, b) => a + b.percentage, 0) + this.state.course.percentage === 100;
         if (!valid) {
@@ -158,7 +158,7 @@ class CalculatorPage extends Component {
         });
     };
 
-    deleteCallback = (index) => () => {
+    deleteCourseWorkCallback = (index) => () => {
         let newCourseWork = [...this.state.course.courseWork];
         newCourseWork.splice(index, 1);
         let course = {...this.state.course};
@@ -235,7 +235,7 @@ class CalculatorPage extends Component {
                     {!this.state.valid && <h2>Your Exam and course work weighting must add up to 100!</h2>}
                 </div>}
                 <div style={{height: '25vh'}}/>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onCalculate}>
                     <label style={{color: "white"}}>
                         Course Name:
                         <TextField
@@ -327,7 +327,7 @@ class CalculatorPage extends Component {
                         course={{...e}}
                         editing={false}
                         cancelCallback={null}
-                        deleteCallback={this.deleteCallback(index)}
+                        deleteCallback={this.deleteCourseWorkCallback(index)}
                         callback={this.updateCourseWorkCallback(index)}
                     />
                 ))}
@@ -347,7 +347,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // dispatching actions returned by action creators
         addCourse: (data) => dispatch({
             course: {
                 name: data.name,
