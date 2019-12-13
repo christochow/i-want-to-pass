@@ -1,9 +1,6 @@
 import WebKit
 class ViewController: UIViewController, WKUIDelegate {
     
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("course")
-    
     var webView: WKWebView!
     
     override func loadView() {
@@ -14,10 +11,11 @@ class ViewController: UIViewController, WKUIDelegate {
         webView.backgroundColor = #colorLiteral(red: 0.1568627451, green: 0.1725490196, blue: 0.2039215686, alpha: 1)
         view = webView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         let savedArray: [HTTPCookie]
         do {
             let rawdata = try Data(contentsOf: self.getDocumentsDirectory().appendingPathComponent("cookies"))
@@ -36,7 +34,7 @@ class ViewController: UIViewController, WKUIDelegate {
         self.webView.load(myRequest)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    @objc func appMovedToBackground() {
         webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({cookies in
         let fullPath = self.getDocumentsDirectory().appendingPathComponent("cookies")
 
