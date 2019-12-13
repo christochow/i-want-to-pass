@@ -2,6 +2,7 @@ package com.christopherChow.iWantToPassAndroid
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -18,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl("https://christochow.github.io/i-want-to-pass")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         CookieManager.getInstance().flush()
     }
 }
