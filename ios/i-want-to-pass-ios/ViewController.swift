@@ -9,7 +9,6 @@ class ViewController: UIViewController, WKUIDelegate {
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        self.webView.configuration.processPool = WKProcessPool()
         webView.uiDelegate = self
         webView.isOpaque = false;
         webView.backgroundColor = #colorLiteral(red: 0.1568627451, green: 0.1725490196, blue: 0.2039215686, alpha: 1)
@@ -37,7 +36,8 @@ class ViewController: UIViewController, WKUIDelegate {
         self.webView.load(myRequest)
     }
     
-    override func viewWillDisappear(_ animated: Bool) { webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({cookies in
+    override func viewWillDisappear(_ animated: Bool) {
+        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({cookies in
         let fullPath = self.getDocumentsDirectory().appendingPathComponent("cookies")
 
         do {
