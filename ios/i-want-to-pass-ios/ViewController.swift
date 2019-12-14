@@ -12,7 +12,7 @@ class ViewController: UIViewController, WKUIDelegate {
         webView.addObserver(self, forKeyPath: "URL", options: .new, context: nil)
         view = webView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let notificationCenter = NotificationCenter.default
@@ -37,20 +37,20 @@ class ViewController: UIViewController, WKUIDelegate {
     
     @objc func appMovedToBackground() {
         webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({cookies in
-        let fullPath = self.getDocumentsDirectory().appendingPathComponent("cookies")
-
-        do {
-            let data = try NSKeyedArchiver.archivedData(withRootObject: cookies, requiringSecureCoding: false)
-            try data.write(to: fullPath)
-        } catch {
-            print("Couldn't write file")
-        }})
+            let fullPath = self.getDocumentsDirectory().appendingPathComponent("cookies")
+            
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: cookies, requiringSecureCoding: false)
+                try data.write(to: fullPath)
+            } catch {
+                print("Couldn't write file")
+            }})
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-      if keyPath == #keyPath(WKWebView.url) {
-        if(self.webView.url?.absoluteString ?? "" == "https://christochow.github.io/i-want-to-pass/#/course"){
-            webView.scrollView.contentOffset = CGPoint.init(x: 0, y: -50)
+        if keyPath == #keyPath(WKWebView.url) {
+            if(self.webView.url?.absoluteString ?? "" == "https://christochow.github.io/i-want-to-pass/#/course"){
+                webView.scrollView.contentOffset = CGPoint.init(x: 0, y: -50)
             }
         }
     }
@@ -59,6 +59,6 @@ class ViewController: UIViewController, WKUIDelegate {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
-        }
+    }
 }
 
