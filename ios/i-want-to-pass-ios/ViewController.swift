@@ -9,6 +9,7 @@ class ViewController: UIViewController, WKUIDelegate {
         webView.uiDelegate = self
         webView.isOpaque = false;
         webView.backgroundColor = #colorLiteral(red: 0.1568627451, green: 0.1725490196, blue: 0.2039215686, alpha: 1)
+        webView.addObserver(self, forKeyPath: "URL", options: .new, context: nil)
         view = webView
     }
 
@@ -46,11 +47,18 @@ class ViewController: UIViewController, WKUIDelegate {
         }})
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+      if keyPath == #keyPath(WKWebView.url) {
+        if(self.webView.url?.absoluteString ?? "" == "https://christochow.github.io/i-want-to-pass/#/course"){
+            webView.scrollView.contentOffset = CGPoint.init(x: 0, y: -50)
+            }
+        }
+    }
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
-    }
-    
+        }
 }
 
