@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import CourseComponent from "../components/CourseComponent";
 import CookieBanner from 'react-cookie-banner';
+import {isMobile} from "react-device-detect";
 
 class MainPage extends Component {
 
@@ -39,14 +40,14 @@ class MainPage extends Component {
                 {this.props.course.map((e, ind) => (
                     <CourseComponent key={ind} callback={this.removeCallback(ind)} course={e}/>))}
                 {this.props.course.length === 0 && 'No saved course at the moment...'}
-                <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
+                {!isMobile && <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
                     <CookieBanner
                                   link={this.cookieLink}
                                   styles={{
                                       banner: { backgroundColor: 'rgba(60, 60, 60, 0.8)', height:'100px'},
                                   }}
                                   dismissOnScroll={false}/>
-                </div>
+                </div>}
             </div>
         )
     };
