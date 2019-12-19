@@ -30,7 +30,7 @@ class ViewController: UIViewController, WKUIDelegate {
             print("Couldn't read file.")
         }
         
-        let myURL = URL(string:"https://christochow.github.io/i-want-to-pass")
+        let myURL = URL(string:"https://christochow.github.io/i-want-to-pass/#/mobile")
         let myRequest = URLRequest(url: myURL!)
         self.webView.load(myRequest)
     }

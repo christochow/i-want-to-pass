@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
         CookieManager.getInstance().acceptCookie();
-        webView.loadUrl("https://christochow.github.io/i-want-to-pass")
+        webView.loadUrl("https://christochow.github.io/i-want-to-pass/#/mobile")
     }
 
     override fun onPause() {
