@@ -16,8 +16,7 @@ function App() {
             verticalAlign: 'middle',
             fontWeight: 400,
             width: '100%',
-            lineHeight: '65px',
-            height: '65px'
+            lineHeight: '65px'
         }}>
             This website uses cookies to store your entered data. By using I Want To Pass, you agree to our <a
             style={{textDecoration: 'underline'}} onClick={() => history.push('/cookie')}>use of cookies</a>
@@ -47,10 +46,8 @@ function App() {
             {!(location.pathname.includes('/mobile'))
             && <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
                 <CookieBanner
+                    disableStyle={true}
                     link={cookieLink}
-                    styles={{
-                        banner: {backgroundColor: 'rgba(60, 60, 60, 0.8)', height: '65px'},
-                    }}
                     dismissOnScroll={false}/>
             </div>}
         </div>
