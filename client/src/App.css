@@ -30,18 +30,22 @@ h2 {
 
 .react-cookie-banner {
     background-color: rgba(60, 60, 60, 0.8);
-    min-height: 65px;
-    vertical-align: center;
+    min-height: 40px;
+    vertical-align: middle;
     align-items: center;
-    overflow: scroll;
-    padding: 5px 10px 5px 100px;
+    padding: 20px 11% 15px 8%;
 }
 
 .cookie-message {
+    overflow: scroll;
     display: inline-block;
+    vertical-align: middle;
 }
 
 .button-close {
+    position: absolute;
+    top: 35px;
+    right: 1%;
     line-height: 24px;
     margin-top: -12px;
     margin-left: 100px;
@@ -54,5 +58,4 @@ h2 {
     font-weight: 500;
     color: rgb(36, 36, 36);
     cursor: pointer;
-
 }

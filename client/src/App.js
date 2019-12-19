@@ -14,12 +14,10 @@ function App() {
     const cookieLink = (
         <div style={{
             verticalAlign: 'middle',
-            fontWeight: 400,
-            width: '100%',
-            lineHeight: '65px'
+            fontWeight: 400
         }}>
             This website uses cookies to store your entered data. By using I Want To Pass, you agree to our <a
-            style={{textDecoration: 'underline'}} onClick={() => history.push('/cookie')}>use of cookies</a>
+            style={{textDecoration: 'underline'}} onClick={() => history.push('/cookie')}>cookie policy</a>
         </div>
     );
 
