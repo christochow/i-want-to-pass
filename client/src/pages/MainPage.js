@@ -3,8 +3,6 @@ import {Button} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import CourseComponent from "../components/CourseComponent";
-import CookieBanner from 'react-cookie-banner';
-import {isMobile} from "react-device-detect";
 
 class MainPage extends Component {
 
