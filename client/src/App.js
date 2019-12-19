@@ -27,11 +27,14 @@ function App() {
     return (
         <div className="App">
             <Switch>
+                <Route path='/cookie'>
+                    <CookiePolicyPage/>
+                </Route>
                 <Route path='/course'>
                     <CalculatorPage/>
                 </Route>
-                <Route path='/cookie'>
-                    <CookiePolicyPage/>
+                <Route path='/mobile/course'>
+                    <CalculatorPage/>
                 </Route>
                 <Route path='/mobile'>
                     <MainPage/>
@@ -41,7 +44,7 @@ function App() {
                 </Route>
             </Switch>
 
-            {!(location.pathname === '/mobile')
+            {!(location.pathname.includes('/mobile'))
             && <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
                 <CookieBanner
                     link={cookieLink}

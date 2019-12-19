@@ -7,7 +7,8 @@ import CourseComponent from "../components/CourseComponent";
 class MainPage extends Component {
 
     onClick = () => {
-        this.props.history.push('/course')
+        let path = this.props.location.pathname.includes('mobile') ? '/mobile/course' : '/course';
+        this.props.history.push(path)
     };
 
     removeCallback = (index) => () => {
@@ -23,7 +24,11 @@ class MainPage extends Component {
                 <Button color="primary" onClick={this.onClick}>Add a new course</Button>
                 <h3>Saved courses</h3>
                 {this.props.course.map((e, ind) => (
-                    <CourseComponent key={ind} callback={this.removeCallback(ind)} course={e}/>))}
+                    <CourseComponent
+                        isWebview={this.props.location.pathname.includes('mobile')}
+                        key={ind}
+                        callback={this.removeCallback(ind)}
+                        course={e}/>))}
                 {this.props.course.length === 0 && 'No saved course at the moment...'}
             </div>
         )
