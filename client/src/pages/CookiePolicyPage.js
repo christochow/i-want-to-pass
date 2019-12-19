@@ -6,12 +6,12 @@ class CookiePolicyPage extends Component {
             <div style={{padding: '2vh', textAlign:'start'}}>
                 <h1>Cookies Policy</h1>
                 <p>Last updated: December 18, 2019</p>
-                <p>IWantToPass ("us", "we", or "our") uses cookies on the https://christochow.github.io/i-want-to-pass/#/ website (the "Service"). By using the Service, you consent to the use of cookies.</p>
-                <p>Our Cookies Policy explains what cookies are, how we use cookies, how third-parties we may partner with may use cookies on the Service, your choices regarding cookies and further information about cookies. This Cookies Policy  for IWantToPass has been created with the help of <a href="https://www.termsfeed.com/cookie-policy-generator/">Cookies Policy Generator</a>.</p>
+                <p>I Want To Pass ("us", "we", or "our") uses cookies on the https://christochow.github.io/i-want-to-pass/#/ website (the "Service"). By using the Service, you consent to the use of cookies.</p>
+                <p>Our Cookies Policy explains what cookies are, how we use cookies, how third-parties we may partner with may use cookies on the Service, your choices regarding cookies and further information about cookies. This Cookies Policy  for I Want To Pass has been created with the help of <a href="https://www.termsfeed.com/cookie-policy-generator/">Cookies Policy Generator</a>.</p>
                 <h2>What are cookies</h2>
                 <p>Cookies are small pieces of text sent by your web browser by a website you visit. A cookie file is stored in your web browser and allows the Service or a third-party to recognize you and make your next visit easier and the Service more useful to you.</p>
                 <p>Cookies can be "persistent" or "session" cookies. Persistent cookies remain on your personal computer or mobile device when you go offline, while session cookies are deleted as soon as you close your web browser.</p>
-                <h2>How IWantToPass uses cookies</h2>
+                <h2>How I Want To Pass uses cookies</h2>
                 <p>When you use and access the Service, we may place a number of cookies files in your web browser.</p>
                 <p>We use cookies to enable storing the data you entered in the browser</p>
 
