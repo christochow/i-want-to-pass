@@ -37,7 +37,6 @@ h2 {
 }
 
 .cookie-message {
-    overflow: scroll;
     display: inline-block;
     vertical-align: middle;
 }
