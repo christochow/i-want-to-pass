@@ -5,6 +5,7 @@
 /local.properties
 .DS_Store
 /build
+app/src/main/gen
 app/build
 /captures
 .externalNativeBuild
