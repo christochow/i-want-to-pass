@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import MainPage from "./pages/MainPage";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import CalculatorPage from "./pages/CalculatorPage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import CookieBanner from "react-cookie-banner";
@@ -17,7 +17,8 @@ function App() {
             fontWeight: 400
         }}>
             This website uses cookies to store your entered data. By using I Want To Pass, you agree to our <a
-            style={{textDecoration: 'underline'}} onClick={() => history.push('/cookie')}>cookie policy</a>
+            style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => history.push('/cookie')}>cookie
+            policy</a>
         </div>
     );
 
@@ -36,12 +37,13 @@ function App() {
                 <Route path='/mobile'>
                     <MainPage/>
                 </Route>
-                <Route path='/'>
+                <Route path='/' exact={true}>
                     <MainPage/>
                 </Route>
+                <Redirect to='/'/>
             </Switch>
 
-            {!(location.pathname.includes('/mobile'))
+            {!(location.pathname.includes('/mobile')) && !(location.pathname.includes('/cookie'))
             && <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
                 <CookieBanner
                     disableStyle={true}
